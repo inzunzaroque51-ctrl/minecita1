@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Para Minelli</title>
+<style>
+:root{
+  --bg-dark:#050507;
+  --accent:#ff3b8d;
+  --accent2:#ff677d;
+  --glass:rgba(255,255,255,0.06);
+}
+html,body{margin:0;font-family:Inter,system-ui;color:#fff;background:var(--bg-dark)}
+body{display:flex;flex-direction:column;align-items:center;padding:32px;transition:0.6s ease;}
+
+/* container */
+.container{
+  width:min(880px,92vw);
+  background:rgba(0,0,0,0.55);
+  border-radius:22px;
+  padding:40px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 12px 40px rgba(0,0,0,0.65);
+  margin-bottom:40px;
+  animation:fade 1.6s ease forwards;
+}
+
+.subtitle{text-align:center;opacity:0.85;margin-bottom:26px;font-size:18px}
+.section-title{font-size:28px;margin:40px 0 18px;color:var(--accent2);text-align:center;font-weight:700}
+
+.buttons{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:10px}
+.btn{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border:0;
+  padding:14px 22px;
+  border-radius:12px;
+  color:#111;
+  font-weight:700;
+  cursor:pointer;
+  font-size:15px;
+  transition:0.15s ease;
+  box-shadow:0 4px 14px rgba(255,90,140,0.4);
+}
+.btn:hover{transform:scale(1.07)}
+
+.long-block{
+  background:var(--glass);
+  padding:22px;
+  border-radius:16px;
+  margin:18px 0;
+  font-size:18px;
+  line-height:1.7;
+  color:#ececec;
+  box-shadow:0 4px 20px rgba(0,0,0,0.35);
+  animation:slide 1.2s ease forwards;
+}
+
+.fade-in{opacity:0;animation:fade 1.8s ease forwards}
+@keyframes fade{to{opacity:1}}
+@keyframes slide{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+
+/* overlay palabras */
+#loveScreen{
+  position:fixed;inset:0;background:rgba(0,0,0,0.9);
+  display:none;justify-content:center;align-items:center;flex-wrap:wrap;z-index:9999;overflow:hidden;
+}
+.loveWord{
+  position:absolute;font-size:40px;font-weight:800;color:#ff4fa3;
+  animation:explode 2.2s ease forwards;
+  pointer-events:none;
+}
+@keyframes explode{
+  0%{transform:translate(0,0) scale(0.5);opacity:0}
+  40%{opacity:1}
+  100%{transform:translate(var(--dx),var(--dy)) scale(1.4);opacity:0}
+}
+
+/* botón magia */
+#magicBtn{
+  margin-top:40px;padding:16px 24px;font-size:18px;font-weight:800;
+  background:linear-gradient(90deg,#ff3b8d,#ff677d);
+  border:0;border-radius:14px;color:#111;cursor:pointer;
+  box-shadow:0 4px 20px rgba(255,70,130,0.6);
+  transition:0.2s ease;
+}
+#magicBtn:hover{transform:scale(1.08)}
+
+#cartaBox{
+  display:none;background:var(--glass);border-radius:16px;padding:26px;
+  margin-top:20px;font-size:19px;line-height:1.8;white-space:pre-wrap;
+  border:1px solid rgba(255,255,255,0.15);
+}
+
+/* mensaje final — ARREGLADO */
+#finalMsg{
+  display:none;
+  position:fixed;
+  inset:0;
+  font-size:75px;
+  color:white;
+  text-align:center;
+  font-weight:900;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  background:rgba(255,80,150,0.25);
+  backdrop-filter:blur(5px);
+  text-shadow:0 0 15px rgba(255,50,120,0.9);
+}
+
+/* lluvia */
+@keyframes fall{to{transform:translateY(110vh);opacity:0}}
+body.romantic-extreme{filter:brightness(1.2) saturate(1.5)}
+@keyframes rise{
+  0%{transform:translateY(0) scale(0.7);opacity:0;}
+  50%{opacity:1;}
+  100%{transform:translateY(-110vh) scale(1.3);opacity:0;}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <p class="subtitle">Una dedicatoria hecha con más que palabras.</p>
+
+  <h2 class="section-title">Frases Cortas</h2>
+  <div class="buttons">
+    <button class="btn">"Eres la única historia que jamás me cansaría de releer."</button>
+    <button class="btn">"No sé cómo pasó… pero ahora todo es mejor contigo."</button>
+    <button class="btn">"Mi lugar favorito siempre termina siendo donde estás tú."</button>
+    <button class="btn">"Tú haces que incluso mis días normales se sientan especiales."</button>
+  </div>
+
+  <h2 class="section-title">Frases Largas</h2>
+  <div class="long-block">"Hay algo en ti que me detiene el mundo..."</div>
+  <div class="long-block">"Minelli, no tienes idea de lo mucho que iluminas..."</div>
+  <div class="long-block">"Hay una paz extraña que solo existe cuando estás tú..."</div>
+
+  <h2 class="section-title fade-in">Algo que quiero que sepas</h2>
+  <div class="long-block" style="animation-delay:0.2s">"Si pudiera guardar un momento para siempre..."</div>
+  <div class="long-block" style="animation-delay:0.4s">"Minelli, tú no llenaste un vacío… creaste un espacio nuevo..."</div>
+
+  <div style="text-align:center;margin-top:35px;">
+    <button id="showCarta" class="btn">Revelar Carta</button>
+  </div>
+
+  <div id="cartaBox"></div>
+
+  <div style="text-align:center">
+    <button id="magicBtn">Presiona aquí</button>
+  </div>
+
+  <div style="text-align:center;margin-top:40px;">
+    <button id="finalBtn" class="btn">Presiona aquí también</button>
+  </div>
+
+  <div id="finalMsg">TE AMO MINELLI ❤</div>
+
+  <div style="text-align:center;margin-top:40px;">
+    <button id="unlockBtn" class="btn" style="background:linear-gradient(90deg,#d8348e,#ff9ac2);">
+      Desbloquear Recuerdo
+    </button>
+  </div>
+
+  <div id="secretMsg" style="
+    display:none;
+    margin-top:30px;
+    font-size:32px;
+    color:#ffb3d9;
+    text-align:center;
+    font-weight:800;
+  "></div>
+
+</div>
+
+<div id="loveScreen"></div>
+
+<script>
+/* fondo */
+setInterval(()=>{
+  document.body.style.background =
+    `radial-gradient(circle at ${Math.random()*100}% ${Math.random()*100}%, 
+    rgba(255,60,140,0.25), rgba(0,0,0,0.9) 70%)`;
+},2000);
+
+/* audio */
+let audio = new Audio("https://www.youtube.com/watch?v=3KO9Jk3Z0II");
+audio.volume = 0.6;
+
+/* pulso */
+function pulseEffect() {
+  const c = document.querySelector(".container");
+  if(!c) return;
+  c.animate([{transform:"scale(1)"},{transform:"scale(1.02)"},{transform:"scale(1)"}],
+            {duration:1800,iterations:Infinity});
+}
+
+/* corazones */
+setInterval(()=>{
+  const heart=document.createElement("div");
+  heart.textContent="💖";
+  heart.style.position="fixed";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.top="100vh";
+  heart.style.fontSize=(Math.random()*30+20)+"px";
+  heart.style.pointerEvents="none";
+  heart.style.animation="rise 6s ease-out forwards";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+},800);
+
+/* modo extremo */
+document.getElementById("magicBtn").addEventListener("click",()=>{
+  audio.play().catch(()=>{});
+  pulseEffect();
+  document.body.classList.add("romantic-extreme");
+
+  const loveScreen=document.getElementById("loveScreen");
+  loveScreen.style.display="flex";
+  loveScreen.innerHTML="";
+
+  for (let i = 0; i < 50; i++) {
+    const word=document.createElement("div");
+    word.className="loveWord";
+    word.textContent="TE AMO MINELLI 💗";
+    word.style.setProperty("--dx", `${(Math.random()*800 - 400)}px`);
+    word.style.setProperty("--dy", `${(Math.random()*800 - 400)}px`);
+    loveScreen.appendChild(word);
+  }
+
+  setTimeout(()=>{
+    loveScreen.style.display="none";
+  },4500);
+});
+
+/* mensaje final CENTRADO + AUTOCIERRE */
+document.getElementById("finalBtn").addEventListener("click",()=>{
+  const finalMsg=document.getElementById("finalMsg");
+  finalMsg.style.display="flex";
+
+  finalMsg.animate([
+    {opacity:0,transform:"scale(0.7)"},
+    {opacity:1,transform:"scale(1.15)"},
+    {opacity:1,transform:"scale(1)"}
+  ],{duration:1200,easing:"ease-out"});
+
+  setTimeout(()=>{ 
+    finalMsg.style.display="none"; 
+  },4000);
+});
+
+/* carta */
+document.getElementById("showCarta").addEventListener("click",()=>{
+  const cartaTexto=`Hay palabras que no caben en una frase.
+Sabes que te amo mucho amor mío, eres la mejor novia que puedo tener, te amo demasiado.
+
+Contigo pasa algo que no pasa con nadie más y que nunca pasará, solo quiero estar siempre contigo.
+Hay algo en tu forma de existir que me encanta, como si tu presencia me alocara más por ti.
+
+No sé si es tu forma de hablar, tu manera de mirar…
+pero contigo todo se siente más claro, más bonito, más real.
+
+No quiero que solo seas un momento bonito.
+Quiero que seas un ahora constante… un para siempre juntos.
+
+Minelli…
+Lo que provocas en mí no es pequeño.
+Eres importante. Mucho más de lo que crees.`;
+
+  const cartaBox=document.getElementById("cartaBox");
+  cartaBox.innerHTML="";
+  cartaBox.style.display="block";
+
+  const tokens=cartaTexto.split(/(\s+)/);
+  let delay=0;
+
+  tokens.forEach(tok=>{
+    const span=document.createElement("span");
+    span.textContent=tok;
+    span.style.opacity="0";
+    span.style.transition=`opacity 0.12s linear ${delay}s`;
+    cartaBox.appendChild(span);
+    delay+=0.08;
+  });
+
+  requestAnimationFrame(()=>{
+    cartaBox.querySelectorAll("span").forEach(s=>s.style.opacity="1");
+  });
+
+});
+
+/* lluvia */
+setInterval(()=>{
+  const heart=document.createElement("div");
+  heart.textContent="❤";
+  heart.style.position='fixed';
+  heart.style.left=Math.random()*100+'vw';
+  heart.style.top='-20px';
+  heart.style.fontSize=(Math.random()*20+20)+'px';
+  heart.style.opacity=0.8;
+  heart.style.animation='fall 4s linear forwards';
+  heart.style.pointerEvents='none';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),4000);
+},600);
+
+/* secreto */
+document.getElementById("unlockBtn").addEventListener("click",()=>{
+  const secretMsg=document.getElementById("secretMsg");
+  let code=prompt("Ingresa nuestra fecha… 💗");
+
+  if(code==="230723"){
+    secretMsg.style.display="block";
+    secretMsg.textContent="Desde el 23/07/23 todo cambió… gracias por existir Minelli 💗";
+
+    secretMsg.animate([
+      {opacity:0,transform:"scale(0.6) translateY(20px)"},
+      {opacity:1,transform:"scale(1.15)"},
+      {opacity:1,transform:"scale(1)"}
+    ],{duration:1500,easing:"ease-out"});
+
+  } else if(code!==null){
+    alert("Ese no es… inténtalo otra vez mi amor 💗");
+  }
+});
+</script>
+
+</body>
+</html>
